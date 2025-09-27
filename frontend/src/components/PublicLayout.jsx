@@ -8,17 +8,15 @@ const PublicLayout = () => {
   const { connectWallet, isConnecting } = useWallet();
 
   return (
-    <div className={`min-h-screen transition-colors duration-200 ${
-      isDark ? 'bg-background-dark' : 'bg-gray-50'
-    }`}>
+    <div className="min-h-screen transition-colors duration-200 bg-gray-50 dark:bg-gray-900">
       {/* Minimal Header for Public Pages */}
-      <header className="bg-white dark:bg-surface-dark shadow-sm border-b border-gray-100 dark:border-gray-800">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-100 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <h1 className={`text-2xl font-bold ${isDark ? 'text-primary-dark-500' : 'text-primary-500'}`}>
+                <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                   TokenStream
                 </h1>
               </div>
@@ -29,30 +27,20 @@ const PublicLayout = () => {
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
-                className={`p-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer ${
-                  isDark 
-                    ? 'text-gray-300 hover:text-primary-dark-500 hover:bg-gray-800 focus:ring-primary-dark-500' 
-                    : 'text-gray-600 hover:text-primary-500 hover:bg-gray-100 focus:ring-primary-500'
-                }`}
+                className="p-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer text-gray-600 hover:text-blue-600 hover:bg-gray-100 focus:ring-blue-500 dark:text-gray-300 dark:hover:text-blue-400 dark:hover:bg-gray-700 dark:focus:ring-blue-400"
                 title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 {isDark ? <HiSun className="w-5 h-5" /> : <HiMoon className="w-5 h-5" />}
               </button>
               
-              <span className={`text-sm hidden md:block ${
-                isDark ? 'text-gray-400' : 'text-gray-500'
-              }`}>
+              <span className="text-sm hidden md:block text-gray-500 dark:text-gray-400">
                 Connect your wallet to get started
               </span>
               
               <button
                 onClick={connectWallet}
                 disabled={isConnecting}
-                className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-200 shadow-sm hover:shadow-md disabled:cursor-not-allowed cursor-pointer ${
-                  isDark 
-                    ? 'bg-primary-dark-500 hover:bg-primary-dark-600 disabled:bg-primary-dark-300 text-white' 
-                    : 'bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white'
-                }`}
+                className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-200 shadow-sm hover:shadow-md disabled:cursor-not-allowed cursor-pointer bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white dark:bg-blue-500 dark:hover:bg-blue-600 dark:disabled:bg-blue-400"
               >
                 {isConnecting ? (
                   <>
