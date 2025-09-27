@@ -44,7 +44,7 @@ const ToastContainer = () => {
         <div
           key={toast.id}
           className={`
-            max-w-md w-full shadow-lg rounded-lg pointer-events-auto
+            max-w-lg w-full shadow-lg rounded-lg pointer-events-auto
             transform transition-all duration-300 ease-in-out
             animate-in slide-in-from-right-full
             ${getToastStyles(toast.type)}
