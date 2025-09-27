@@ -20,7 +20,7 @@ function App() {
         </Route>
         
         {/* Protected routes with AuthenticatedLayout */}
-        <Route path="/" element={<AuthenticatedLayout />}>
+        <Route element={<AuthenticatedLayout />}>
           <Route 
             path="dashboard" 
             element={
