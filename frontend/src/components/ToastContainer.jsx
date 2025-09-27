@@ -39,12 +39,12 @@ const ToastContainer = () => {
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
+    <div className="fixed top-4 right-4 z-50 space-y-2 w-[340px] ">
       {toasts.map((toast) => (
         <div
           key={toast.id}
           className={`
-            max-w-lg w-full shadow-lg rounded-lg pointer-events-auto
+            w-[340px] shadow-lg rounded-lg pointer-events-auto
             transform transition-all duration-300 ease-in-out
             animate-in slide-in-from-right-full
             ${getToastStyles(toast.type)}
