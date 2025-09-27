@@ -140,7 +140,7 @@ const Dashboard = () => {
               <p className={`mb-6 ${
                 isDark ? 'text-gray-400' : 'text-gray-600'
               }`}>Start streaming your salary payments on the blockchain</p>
-              <button className={`px-6 py-3 rounded-lg font-medium transition-colors duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              <button className={`px-6 py-3 rounded-lg font-medium transition-colors duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer ${
                 isDark 
                   ? 'bg-primary-dark-500 hover:bg-primary-dark-600 text-white focus:ring-primary-dark-500' 
                   : 'bg-primary-500 hover:bg-primary-600 text-white focus:ring-primary-500'

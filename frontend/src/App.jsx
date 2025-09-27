@@ -1,18 +1,32 @@
 import { useWallet } from './hooks/useWallet'
-import { Header, HomePage, Dashboard } from './components'
+import { Header, HomePage, Dashboard, ManageUsers } from './components'
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'
+import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
 import './index.css'
 
 const AppContent = () => {
   const { isConnected } = useWallet()
   const { isDark } = useTheme()
+  const { currentPage } = useNavigation()
+
+  const renderPage = () => {
+    if (!isConnected) return <HomePage />
+    
+    switch (currentPage) {
+      case 'manage-users':
+        return <ManageUsers />
+      case 'dashboard':
+      default:
+        return <Dashboard />
+    }
+  }
 
   return (
     <div className={`min-h-screen transition-colors duration-200 ${
       isDark ? 'bg-background-dark' : 'bg-gray-50'
     }`}>
       <Header />
-      {isConnected ? <Dashboard /> : <HomePage />}
+      {renderPage()}
     </div>
   )
 }
@@ -20,7 +34,9 @@ const AppContent = () => {
 function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <NavigationProvider>
+        <AppContent />
+      </NavigationProvider>
     </ThemeProvider>
   )
 }

@@ -132,7 +132,7 @@ const HomePage = () => {
                 href="https://metamask.io/download/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`inline-flex items-center px-8 py-4 font-semibold rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl ${
+                className={`inline-flex items-center px-8 py-4 font-semibold rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl cursor-pointer ${
                   isDark 
                     ? 'bg-primary-dark-500 hover:bg-primary-dark-600 text-white' 
                     : 'bg-primary-500 hover:bg-primary-600 text-white'
@@ -148,7 +148,7 @@ const HomePage = () => {
             <button
               onClick={connectWallet}
               disabled={isConnecting}
-              className={`inline-flex items-center px-8 py-4 font-semibold rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl disabled:cursor-not-allowed ${
+              className={`inline-flex items-center px-8 py-4 font-semibold rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl disabled:cursor-not-allowed cursor-pointer ${
                 isDark 
                   ? 'bg-primary-dark-500 hover:bg-primary-dark-600 disabled:bg-primary-dark-300 text-white' 
                   : 'bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white'
