@@ -6,9 +6,7 @@ const Dashboard = () => {
   const { isDark } = useTheme();
 
   return (
-    <div className={`min-h-screen py-8 ${
-      isDark ? 'bg-background-dark' : 'bg-gray-50'
-    }`}>
+    <div className="py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Welcome Section */}
         <div className={`rounded-2xl shadow-sm p-8 mb-8 ${

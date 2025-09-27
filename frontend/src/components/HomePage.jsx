@@ -6,11 +6,7 @@ const HomePage = () => {
   const { isDark } = useTheme();
 
   return (
-    <div className={`min-h-screen flex items-center justify-center px-4 ${
-      isDark 
-        ? 'bg-gradient-to-br from-gray-900 to-background-dark' 
-        : 'bg-gradient-to-br from-primary-50 to-white'
-    }`}>
+    <div className="flex items-center justify-center px-4 py-8">
       <div className="max-w-4xl mx-auto text-center">
         {/* Hero Section */}
         <div className="mb-12">

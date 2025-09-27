@@ -1,42 +1,47 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { HomePage, Dashboard, ManageUsers, PublicLayout, AuthenticatedLayout, ProtectedRoute } from './components'
+import { ThemeProvider } from './contexts/ThemeContext'
 import { useWallet } from './hooks/useWallet'
-import { Header, HomePage, Dashboard, ManageUsers } from './components'
-import { ThemeProvider, useTheme } from './contexts/ThemeContext'
-import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
 import './index.css'
 
-const AppContent = () => {
+// Component to handle root redirect based on wallet connection
+const RootRedirect = () => {
   const { isConnected } = useWallet()
-  const { isDark } = useTheme()
-  const { currentPage } = useNavigation()
-
-  const renderPage = () => {
-    if (!isConnected) return <HomePage />
-    
-    switch (currentPage) {
-      case 'manage-users':
-        return <ManageUsers />
-      case 'dashboard':
-      default:
-        return <Dashboard />
-    }
-  }
-
-  return (
-    <div className={`min-h-screen transition-colors duration-200 ${
-      isDark ? 'bg-background-dark' : 'bg-gray-50'
-    }`}>
-      <Header />
-      {renderPage()}
-    </div>
-  )
+  return isConnected ? <Navigate to="/dashboard" replace /> : <HomePage />
 }
 
 function App() {
   return (
     <ThemeProvider>
-      <NavigationProvider>
-        <AppContent />
-      </NavigationProvider>
+      <Routes>
+        {/* Public routes with PublicLayout */}
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<RootRedirect />} />
+        </Route>
+        
+        {/* Protected routes with AuthenticatedLayout */}
+        <Route path="/" element={<AuthenticatedLayout />}>
+          <Route 
+            path="dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="manage-users" 
+            element={
+              <ProtectedRoute>
+                <ManageUsers />
+              </ProtectedRoute>
+            } 
+          />
+        </Route>
+        
+        {/* Catch all route - redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </ThemeProvider>
   )
 }
