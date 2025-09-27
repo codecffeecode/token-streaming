@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '../contexts/ToastContext';
 
-const WALLET_ADDRESS_KEY = 'wallet_address';
+export const WALLET_ADDRESS_KEY = 'wallet_address';
 
 export const useWallet = () => {
   const [address, setAddress] = useState(null);
@@ -50,9 +50,7 @@ export const useWallet = () => {
         showSuccess(`Wallet connected successfully!`);
         
         // Only redirect if we're on the homepage
-        if (location.pathname === '/') {
-          navigate('/dashboard', { replace: true });
-        }
+        navigate('/dashboard');
       }
     } catch (err) {
       console.error('Error connecting to MetaMask:', err);
@@ -72,7 +70,7 @@ export const useWallet = () => {
     
     // Show info toast and redirect to homepage
     showInfo('Wallet disconnected successfully');
-    navigate('/', { replace: true });
+    navigate('/home', { replace: true });
   }, [navigate, showInfo]);
 
   // Format address for display
@@ -92,7 +90,7 @@ export const useWallet = () => {
         localStorage.removeItem(WALLET_ADDRESS_KEY);
         setError(null);
         showInfo('Wallet disconnected from MetaMask');
-        navigate('/', { replace: true });
+        navigate('/home', { replace: true });
       } else if (accounts[0] !== address) {
         // User switched accounts
         const newAddress = accounts[0];

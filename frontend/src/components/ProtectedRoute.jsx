@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
-import { useWallet } from '../hooks/useWallet';
+import { useWallet, WALLET_ADDRESS_KEY } from '../hooks/useWallet';
 
 const ProtectedRoute = ({ children }) => {
-  const { isConnected } = useWallet();
+  // const { isConnected } = useWallet();
   
-  if (!isConnected) {
+  if (!localStorage.getItem(WALLET_ADDRESS_KEY)) {
     return <Navigate to="/" replace />;
   }
   

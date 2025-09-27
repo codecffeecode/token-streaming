@@ -5,11 +5,6 @@ import { ToastProvider } from './contexts/ToastContext'
 import { useWallet } from './hooks/useWallet'
 import './index.css'
 
-// Component to handle root redirect based on wallet connection
-const RootRedirect = () => {
-  const { isConnected } = useWallet()
-  return isConnected ? <Navigate to="/dashboard" replace /> : <HomePage />
-}
 
 function App() {
   return (
@@ -17,8 +12,8 @@ function App() {
       <ToastProvider>
         <Routes>
           {/* Public routes with PublicLayout */}
-          <Route path="/" element={<PublicLayout />}>
-            <Route index element={<RootRedirect />} />
+          <Route path="home" element={<PublicLayout />}>
+            <Route index element={<HomePage />} />
           </Route>
           
           {/* Protected routes with AuthenticatedLayout */}
@@ -42,7 +37,7 @@ function App() {
           </Route>
           
           {/* Catch all route - redirect to home */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
         
         {/* Toast Container */}

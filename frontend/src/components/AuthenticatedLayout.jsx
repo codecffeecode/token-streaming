@@ -42,7 +42,7 @@ const AuthenticatedLayout = () => {
                 {isDark ? <HiSun className="w-5 h-5" /> : <HiMoon className="w-5 h-5" />}
               </button>
               
-              {/* Navigation Buttons */}
+              {/* Navigation Buttons */}w
               <button 
                 onClick={() => navigate('/dashboard')}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer ${
