@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useToast } from '../contexts/ToastContext';
 
 const WALLET_ADDRESS_KEY = 'wallet_address';
 
@@ -6,6 +8,9 @@ export const useWallet = () => {
   const [address, setAddress] = useState(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { showSuccess, showError, showInfo } = useToast();
 
   // Check if wallet is already connected on mount
   useEffect(() => {
@@ -40,21 +45,35 @@ export const useWallet = () => {
         const walletAddress = accounts[0];
         setAddress(walletAddress);
         localStorage.setItem(WALLET_ADDRESS_KEY, walletAddress);
+        
+        // Show success toast and redirect to dashboard
+        showSuccess(`Wallet connected successfully!`);
+        
+        // Only redirect if we're on the homepage
+        if (location.pathname === '/') {
+          navigate('/dashboard', { replace: true });
+        }
       }
     } catch (err) {
       console.error('Error connecting to MetaMask:', err);
-      setError(err.message || 'Failed to connect to MetaMask');
+      const errorMessage = err.message || 'Failed to connect to MetaMask';
+      setError(errorMessage);
+      showError(errorMessage);
     } finally {
       setIsConnecting(false);
     }
-  }, [isMetaMaskInstalled]);
+  }, [isMetaMaskInstalled, navigate, location.pathname, showSuccess, showError]);
 
   // Disconnect wallet
   const disconnectWallet = useCallback(() => {
     setAddress(null);
     localStorage.removeItem(WALLET_ADDRESS_KEY);
     setError(null);
-  }, []);
+    
+    // Show info toast and redirect to homepage
+    showInfo('Wallet disconnected successfully');
+    navigate('/', { replace: true });
+  }, [navigate, showInfo]);
 
   // Format address for display
   const formatAddress = useCallback((addr) => {
@@ -69,12 +88,17 @@ export const useWallet = () => {
     const handleAccountsChanged = (accounts) => {
       if (accounts.length === 0) {
         // User disconnected their wallet
-        disconnectWallet();
+        setAddress(null);
+        localStorage.removeItem(WALLET_ADDRESS_KEY);
+        setError(null);
+        showInfo('Wallet disconnected from MetaMask');
+        navigate('/', { replace: true });
       } else if (accounts[0] !== address) {
         // User switched accounts
         const newAddress = accounts[0];
         setAddress(newAddress);
         localStorage.setItem(WALLET_ADDRESS_KEY, newAddress);
+        showSuccess(`Switched to account: ${newAddress.slice(0, 6)}...${newAddress.slice(-4)}`);
       }
     };
 
@@ -83,7 +107,7 @@ export const useWallet = () => {
     return () => {
       window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
     };
-  }, [address, disconnectWallet, isMetaMaskInstalled]);
+  }, [address, isMetaMaskInstalled, navigate, showInfo, showSuccess]);
 
   return {
     address,

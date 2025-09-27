@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useToast } from '../contexts/ToastContext';
 import { HiPlus, HiTrash, HiUpload, HiUser } from 'react-icons/hi';
 
 const ManageUsers = () => {
   const { isDark } = useTheme();
+  const { showSuccess, showError } = useToast();
   const [users, setUsers] = useState([
     { id: 1, name: 'John Doe', address: '0x1234567890123456789012345678901234567890' },
     { id: 2, name: 'Jane Smith', address: '0x0987654321098765432109876543210987654321' },
@@ -26,6 +28,7 @@ const ManageUsers = () => {
       setUsers([...users, { id: newId, ...newUser }]);
       setNewUser({ name: '', address: '' });
       setShowAddModal(false);
+      showSuccess(`User "${newUser.name}" added successfully!`);
     }
   };
 
@@ -41,14 +44,17 @@ const ManageUsers = () => {
         setUsers([...users, ...newUsers]);
         setJsonInput('');
         setShowAddModal(false);
+        showSuccess(`Successfully imported ${newUsers.length} users!`);
       }
     } catch (error) {
-      alert('Invalid JSON format');
+      showError('Invalid JSON format. Please check your data and try again.');
     }
   };
 
   const handleDeleteUser = (userId) => {
+    const userToDelete = users.find(user => user.id === userId);
     setUsers(users.filter(user => user.id !== userId));
+    showSuccess(`User "${userToDelete?.name || 'Unknown'}" deleted successfully!`);
   };
 
   const closeModal = () => {
