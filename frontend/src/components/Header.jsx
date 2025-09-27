@@ -1,16 +1,19 @@
 import { useWallet } from '../hooks/useWallet';
+import { useTheme } from '../contexts/ThemeContext';
+import { HiSun, HiMoon } from 'react-icons/hi';
 
 const Header = () => {
-  const { address, isConnected, disconnectWallet, formatAddress } = useWallet();
+  const { address, isConnected, disconnectWallet, formatAddress, connectWallet, isConnecting } = useWallet();
+  const { theme, toggleTheme, isDark } = useTheme();
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-100">
+    <header className="bg-white dark:bg-surface-dark shadow-sm border-b border-gray-100 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-primary-500">
+              <h1 className={`text-2xl font-bold ${isDark ? 'text-primary-dark-500' : 'text-primary-500'}`}>
                 TokenStream
               </h1>
             </div>
@@ -18,26 +21,100 @@ const Header = () => {
 
           {/* Navigation */}
           {isConnected ? (
-            <nav className="flex items-center space-x-8">
-              <button className="text-gray-700 hover:text-primary-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            <nav className="flex items-center space-x-4 sm:space-x-8">
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className={`p-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  isDark 
+                    ? 'text-gray-300 hover:text-primary-dark-500 hover:bg-gray-800 focus:ring-primary-dark-500' 
+                    : 'text-gray-600 hover:text-primary-500 hover:bg-gray-100 focus:ring-primary-500'
+                }`}
+                title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDark ? <HiSun className="w-5 h-5" /> : <HiMoon className="w-5 h-5" />}
+              </button>
+              
+              <button className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                isDark 
+                  ? 'text-gray-300 hover:text-primary-dark-500 hover:bg-gray-800 focus:ring-primary-dark-500' 
+                  : 'text-gray-700 hover:text-primary-500 hover:bg-primary-50 focus:ring-primary-500'
+              }`}>
+                <svg className="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
                 Streaming
               </button>
               
-              <div className="flex items-center space-x-4">
-                <div className="text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <div className={`text-xs sm:text-sm px-2 sm:px-3 py-2 rounded-lg ${
+                  isDark 
+                    ? 'text-gray-300 bg-gray-800' 
+                    : 'text-gray-600 bg-gray-50'
+                }`}>
                   {formatAddress(address)}
                 </div>
                 <button
                   onClick={disconnectWallet}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+                  className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                    isDark 
+                      ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 focus:ring-gray-500' 
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700 focus:ring-gray-500'
+                  }`}
                 >
-                  Logout
+                  <svg className="w-4 h-4 mr-1 sm:mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <span className="hidden sm:inline">Logout</span>
+                  <span className="sm:hidden">Exit</span>
                 </button>
               </div>
             </nav>
           ) : (
-            <div className="text-sm text-gray-500">
-              Connect your wallet to get started
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className={`p-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  isDark 
+                    ? 'text-gray-300 hover:text-primary-dark-500 hover:bg-gray-800 focus:ring-primary-dark-500' 
+                    : 'text-gray-600 hover:text-primary-500 hover:bg-gray-100 focus:ring-primary-500'
+                }`}
+                title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDark ? <HiSun className="w-5 h-5" /> : <HiMoon className="w-5 h-5" />}
+              </button>
+              
+              <span className={`text-sm hidden md:block ${
+                isDark ? 'text-gray-400' : 'text-gray-500'
+              }`}>
+                Connect your wallet to get started
+              </span>
+              <button
+                onClick={connectWallet}
+                disabled={isConnecting}
+                className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-200 shadow-sm hover:shadow-md disabled:cursor-not-allowed ${
+                  isDark 
+                    ? 'bg-primary-dark-500 hover:bg-primary-dark-600 disabled:bg-primary-dark-300 text-white' 
+                    : 'bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white'
+                }`}
+              >
+                {isConnecting ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-1 sm:mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span className="hidden sm:inline">Connecting...</span>
+                    <span className="sm:hidden">...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="hidden sm:inline">Connect Wallet</span>
+                    <span className="sm:hidden">Connect</span>
+                  </>
+                )}
+              </button>
             </div>
           )}
         </div>
